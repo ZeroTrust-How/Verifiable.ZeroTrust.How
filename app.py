@@ -72,6 +72,11 @@ def insuranceGroup():
 def healthcareProvider():
     return render_template('healthcare-provider.html')
 
+    
+@app.route('/picture-credits/')
+def pictureCredits():
+    return render_template('picture-credits.html')
+
 @app.route("/echo", methods = ['GET'])
 def echoApi():
     result = {
