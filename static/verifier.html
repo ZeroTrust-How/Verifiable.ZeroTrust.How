@@ -45,6 +45,7 @@
                 var qrcode = new QRCode("qrcode", { width: 300, height: 300 });
                 var respPresentationReq = null;
                 signIn.addEventListener('click', () => {
+                    console.log(window.location.origin)
                     fetch('/api/verifier/presentation-request')
                     .then(function(response) {
                         response.text()

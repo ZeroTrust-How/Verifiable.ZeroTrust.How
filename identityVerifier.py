@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask import request,Response,redirect
 from flask_caching import Cache
 from flask.json import jsonify
@@ -13,11 +13,10 @@ import requests
 import jwt, base64
 import msal
 
-from __main__ import app
-from __main__ import cache
-from __main__ import log
-from __main__ import config
-from __main__ import msalCca
+from extensions import cache
+from extensions import log
+from extensions import config
+from extensions import msalCca
 
 presentationFile = os.getenv('PRESENTATIONFILE')
 if presentationFile is None:
@@ -33,7 +32,9 @@ presentationConfig["callback"]["headers"]["api-key"] = apiKey
 presentationConfig["authority"] = config["VerifierAuthority"]
 presentationConfig["requestedCredentials"][0]["acceptedIssuers"][0] = config["IssuerAuthority"]
 
-@app.route("/api/verifier/presentation-request", methods = ['GET'])
+identity_verifier = Blueprint('identity_verifier', __name__)
+
+@identity_verifier.route("/api/verifier/presentation-request", methods = ['GET'])
 def presentationRequest():
     """ This method is called from the UI to initiate the presentation of the verifiable credential """
     id = str(uuid.uuid4())
@@ -61,7 +62,7 @@ def presentationRequest():
     return response
 
 
-@app.route("/api/verifier/presentation-request-callback", methods = ['POST'])
+@identity_verifier.route("/api/verifier/presentation-request-callback", methods = ['POST'])
 def presentationRequestApiCallback():
     """ This method is called by the VC Request API when the user scans a QR code and presents a Verifiable Credential to the service """
     presentationResponse = request.json
@@ -92,7 +93,7 @@ def presentationRequestApiCallback():
         return ""
     return ""
 
-@app.route("/api/verifier/presentation-response", methods = ['GET'])
+@identity_verifier.route("/api/verifier/presentation-response", methods = ['GET'])
 def presentationRequestStatus():
     """ this function is called from the UI polling for a response from the AAD VC Service.
      when a callback is recieved at the presentationCallback service the session will be updated
@@ -110,7 +111,7 @@ def presentationRequestStatus():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route("/api/verifier/presentation-response-b2c", methods = ['POST'])
+@identity_verifier.route("/api/verifier/presentation-response-b2c", methods = ['POST'])
 def presentationResponseB2C():
     presentationResponse = request.json
     id = presentationResponse["id"]

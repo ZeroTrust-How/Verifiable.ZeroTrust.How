@@ -16,6 +16,11 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 
+from extensions import cache
+from identityIssuer import identity_issuer 
+from identityVerifier import identity_verifier
+from employerIssuer import employer_issuer
+
 cacheConfig = {
     "DEBUG": True,          # some Flask specific configs
     "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
@@ -23,55 +28,11 @@ cacheConfig = {
 }
 
 app = Flask(__name__,static_url_path='',static_folder='static',template_folder='static')
+app.register_blueprint(identity_issuer)
+app.register_blueprint(identity_verifier)
+app.register_blueprint(employer_issuer)
 
-app.config.from_mapping(cacheConfig)
-cache = Cache(app)
-
-log = logging.getLogger() 
-log.setLevel(logging.INFO)
-
-configFile = os.getenv('CONFIGFILE')
-if configFile is None:
-    configFile = os.path.realpath(os.path.join(os.path.dirname(__file__), 'config.json'))
-    #configFile = sys.argv[1]
-config = json.load(open(configFile))
-
-msalCca = msal.ConfidentialClientApplication( config["azClientId"], 
-    authority="https://login.microsoftonline.com/" + config["azTenantId"],
-    client_credential=config["azClientSecret"],
-    )
-
-if config["azCertificateName"] != "":
-    with open(config["azCertificatePrivateKeyLocation"], "rb") as file:
-        private_key = file.read()
-    with open(config["azCertificateLocation"]) as file:
-        public_certificate = file.read()
-    cert = load_pem_x509_certificate(data=bytes(public_certificate, 'UTF-8'), backend=default_backend())
-    thumbprint = (cert.fingerprint(hashes.SHA1()).hex())
-    print("Cert based auth using thumbprint: " + thumbprint)    
-    msalCca = msal.ConfidentialClientApplication( config["azClientId"], 
-       authority="https://login.microsoftonline.com/" + config["azTenantId"],
-        client_credential={
-            "private_key": private_key,
-            "thumbprint": thumbprint,
-            "public_certificate": public_certificate
-        }
-    )    
-
-# Check if it is an EU tenant and set up the endpoint for it
-r = requests.get("https://login.microsoftonline.com/" + config["azTenantId"] + "/v2.0/.well-known/openid-configuration")
-resp = r.json()
-print("tenant_region_scope = " + resp["tenant_region_scope"])
-config["tenant_region_scope"] = resp["tenant_region_scope"]
-config["msIdentityHostName"] = "https://verifiedid.did.msidentity.com/v1.0/"
-# Check that the Credential Manifest URL is in the same tenant Region and throw an error if it's not
-if False == config["CredentialManifest"].startswith( config["msIdentityHostName"] ):
-    raise ValueError("Error in config file. CredentialManifest URL configured for wrong tenant region. Should start with: " + config["msIdentityHostName"])
-    
-if __name__ == "__main__":
-    import identityIssuer
-    import identityVerifier
-    import employerIssuer
+cache.init_app(app, config=cacheConfig)
 
 @app.route('/')
 def root():
@@ -111,5 +72,5 @@ def echoApi():
 if __name__ == "__main__":
     port = os.getenv('PORT')
     if port is None:
-        port = 8080
+        port = 5000
     app.run(host="0.0.0.0", port=port)

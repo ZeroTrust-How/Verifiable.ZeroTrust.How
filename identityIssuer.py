@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask import request,Response,redirect
 from flask_caching import Cache
 from flask.json import jsonify
@@ -13,11 +13,10 @@ import requests
 from random import randint
 import msal
 
-from __main__ import app
-from __main__ import cache
-from __main__ import log
-from __main__ import config
-from __main__ import msalCca
+from extensions import cache
+from extensions import log
+from extensions import config
+from extensions import msalCca
 
 issuanceFile = os.getenv('ISSUANCEFILE')
 if issuanceFile is None:
@@ -36,7 +35,9 @@ if "pin" in issuanceConfig is not None:
     if int(issuanceConfig["pin"]["length"]) == 0:
         del issuanceConfig["pin"]
 
-@app.route("/api/issuer/issuance-request", methods = ['GET'])
+identity_issuer = Blueprint('identity_issuer', __name__)
+
+@identity_issuer.route("/api/issuer/issuance-request", methods = ['GET'])
 def issuanceRequest():
     """ This method is called from the UI to initiate the issuance of the verifiable credential """
     id = str(uuid.uuid4())
@@ -74,7 +75,7 @@ def issuanceRequest():
     #print(resp)
     return Response( json.dumps(resp), status=200, mimetype='application/json')
 
-@app.route("/api/issuer/issuance-request-callback", methods = ['POST'])
+@identity_issuer.route("/api/issuer/issuance-request-callback", methods = ['POST'])
 def issuanceRequestApiCallback():
     """ This method is called by the VC Request API when the user scans a QR code and presents a Verifiable Credential to the service """
     issuanceResponse = request.json
@@ -105,7 +106,7 @@ def issuanceRequestApiCallback():
         return ""
     return ""
 
-@app.route("/api/issuer/issuance-response", methods = ['GET'])
+@identity_issuer.route("/api/issuer/issuance-response", methods = ['GET'])
 def issuanceRequestStatus():
     """ this function is called from the UI polling for a response from the AAD VC Service.
     when a callback is recieved at the presentationCallback service the session will be updated
