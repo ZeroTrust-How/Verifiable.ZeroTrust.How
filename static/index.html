@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <h1>Microsoft Entra Verified ID - Demo</h1>
+        <p>In a real world scenario you will be asked</p>    
+        <button type="button" id="idIssue" class="button">GET CREDENTIAL</button>
+        <button type="button" id="idVerify" class="button">VERIFY CREDENTIAL</button>
+        <script>
+            var idIssue = document.getElementById('idIssue');
+            var idVerify = document.getElementById('idVerify');
+            idIssue.addEventListener('click', () => {
+                window.location = "issuer.html";
+            })
+            idVerify.addEventListener('click', () => {
+                window.location = "verifier.html";
+            })
+        </script>
+    </div>
+{% endblock %}
