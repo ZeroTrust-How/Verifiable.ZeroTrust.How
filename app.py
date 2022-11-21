@@ -16,10 +16,13 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 
-from extensions import cache
-from identityIssuer import identity_issuer 
-from identityVerifier import identity_verifier
-from employerIssuer import employer_issuer
+from common.extensions import cache
+from Issuance.identityIssuer import identity_issuer 
+from Presentations.identityVerifier import identity_verifier
+from Issuance.employerIssuer import employer_issuer
+from Issuance.insuranceIssuer import insurance_issuer
+from Presentations.identityEmployeeVerifier import identity_employee_verifier
+from Presentations.identityInsuranceVerifier import identity_insurance_verifier
 
 cacheConfig = {
     "DEBUG": True,          # some Flask specific configs
@@ -31,6 +34,9 @@ app = Flask(__name__,static_url_path='',static_folder='static',template_folder='
 app.register_blueprint(identity_issuer)
 app.register_blueprint(identity_verifier)
 app.register_blueprint(employer_issuer)
+app.register_blueprint(insurance_issuer)
+app.register_blueprint(identity_employee_verifier)
+app.register_blueprint(identity_insurance_verifier)
 
 cache.init_app(app, config=cacheConfig)
 
@@ -53,6 +59,14 @@ def employer():
 @app.route('/insurance-provider/')
 def insuranceProvider():
     return render_template('insurance-provider.html')
+
+@app.route('/insurance-individual/')
+def insuranceIndividual():
+    return render_template('insurance-individual-verify_issue.html')
+
+@app.route('/insurance-group/')
+def insuranceGroup():
+    return render_template('insurance-group-verify_issue.html')
 
 @app.route('/healthcare-provider/')
 def healthcareProvider():

@@ -13,14 +13,14 @@ import requests
 from random import randint
 import msal
 
-from extensions import cache
-from extensions import log
-from extensions import config
-from extensions import msalCca
+from common.extensions import cache
+from common.extensions import log
+from common.extensions import config
+from common.extensions import msalCca
 
 issuanceFile = os.getenv('ISSUANCEFILE')
 if issuanceFile is None:
-    issuanceFile = os.path.realpath(os.path.join(os.path.dirname(__file__), 'employer_issuance.json'))
+    issuanceFile = os.path.realpath(os.path.join(os.path.dirname(__file__), '../Config/insurance_issuance.json'))
     #issuanceFile = sys.argv[2]
 fI = open(issuanceFile,)
 issuanceConfig = json.load(fI)
@@ -35,10 +35,10 @@ if "pin" in issuanceConfig is not None:
     if int(issuanceConfig["pin"]["length"]) == 0:
         del issuanceConfig["pin"]
 
-employer_issuer = Blueprint('employer_issuer', __name__)
+insurance_issuer = Blueprint('insurance_issuer', __name__)
 
-@employer_issuer.route("/api/employer/issuance-request", methods = ['GET'])
-def employerIssuanceRequest():
+@insurance_issuer.route("/api/insurance/issuance-request", methods = ['GET'])
+def insuranceIssuanceRequest():
     """ This method is called from the UI to initiate the issuance of the verifiable credential """
     id = str(uuid.uuid4())
     accessToken = ""
@@ -50,7 +50,7 @@ def employerIssuanceRequest():
         print(result.get("error") + result.get("error_description"))
 
     payload = issuanceConfig.copy()
-    payload["callback"]["url"] = str(request.url_root).replace("http://", "https://") + "api/employer/issuance-request-callback"
+    payload["callback"]["url"] = str(request.url_root).replace("http://", "https://") + "api/insurance/issuance-request-callback"
     payload["callback"]["state"] = id
     pinCode = 0
     if "pin" in payload is not None:
@@ -59,8 +59,8 @@ def employerIssuanceRequest():
     if "claims" in payload is not None:
         payload["claims"]["given_name"] = "Tyler"
         payload["claims"]["family_name"] = "Durden"
-        payload["claims"]["employee_id"] = "PSS7104"
-        payload["claims"]["email_address"] = "tdurden@paperstreetsoap.co"
+        payload["claims"]["insurance_id"] = "AIC538910"
+        payload["claims"]["insurance_type"] = "Premium"
         payload["claims"]["status"] = "Active"
     print( json.dumps(payload) )
     post_headers = { "content-type": "application/json", "Authorization": "Bearer " + accessToken }
@@ -76,8 +76,8 @@ def employerIssuanceRequest():
     #print(resp)
     return Response( json.dumps(resp), status=200, mimetype='application/json')
 
-@employer_issuer.route("/api/employer/issuance-request-callback", methods = ['POST'])
-def employerIssuanceRequestApiCallback():
+@insurance_issuer.route("/api/insurance/issuance-request-callback", methods = ['POST'])
+def insuranceIssuanceRequestApiCallback():
     """ This method is called by the VC Request API when the user scans a QR code and presents a Verifiable Credential to the service """
     issuanceResponse = request.json
     print(issuanceResponse)
@@ -94,7 +94,7 @@ def employerIssuanceRequestApiCallback():
     if issuanceResponse["requestStatus"] == "issuance_successful":
         cacheData = {
             "status": issuanceResponse["requestStatus"],
-            "message": "Credential successfully issued"
+            "message": "Congrats!! Your insurance card successfully issued."
         }
         cache.set( issuanceResponse["state"], json.dumps(cacheData) )
         return ""
@@ -107,8 +107,8 @@ def employerIssuanceRequestApiCallback():
         return ""
     return ""
 
-@employer_issuer.route("/api/employer/issuance-response", methods = ['GET'])
-def employerIssuanceRequestStatus():
+@insurance_issuer.route("/api/insurance/issuance-response", methods = ['GET'])
+def insuranceIssuanceRequestStatus():
     """ this function is called from the UI polling for a response from the AAD VC Service.
     when a callback is recieved at the presentationCallback service the session will be updated
      """

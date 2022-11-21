@@ -13,14 +13,14 @@ import requests
 import jwt, base64
 import msal
 
-from extensions import cache
-from extensions import log
-from extensions import config
-from extensions import msalCca
+from common.extensions import cache
+from common.extensions import log
+from common.extensions import config
+from common.extensions import msalCca
 
 presentationFile = os.getenv('PRESENTATIONFILE')
 if presentationFile is None:
-    presentationFile = os.path.realpath(os.path.join(os.path.dirname(__file__), 'identity_presentation.json'))
+    presentationFile = os.path.realpath(os.path.join(os.path.dirname(__file__), '../Config/identity_presentation.json'))
     #presentationFile = sys.argv[3]
 fP = open(presentationFile,)
 presentationConfig = json.load(fP)
@@ -80,7 +80,7 @@ def presentationRequestApiCallback():
     if presentationResponse["requestStatus"] == "presentation_verified":
         cacheData = {
             "status": presentationResponse["requestStatus"],
-            "message": "Presentation received",
+            #"message": "Presentation received",
             "payload": presentationResponse["verifiedCredentialsData"],
             "subject": presentationResponse["subject"],
             "firstName": presentationResponse["verifiedCredentialsData"][0]["claims"]["firstName"],

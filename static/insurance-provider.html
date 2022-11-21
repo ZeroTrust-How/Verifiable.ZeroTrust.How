@@ -1,1 +1,23 @@
 {% extends 'layout.html' %}
+
+{% block content %}
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="../images/insurance_image.jpg" class="d-block mx-lg-auto img-fluid" alt="logo" width="700" height="300" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">An Insurance Company</h1>
+        <p>An Insurance Company issues a Health Insurance Card. You have two options, either get an individual insurance card or an employer sponsored insurance card.</p>
+        <p>Please select your prefered insurance type. You are required to present your Identity or both Identity and Employmee Cards.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ url_for('insuranceIndividual') }}" class="btn btn-primary px-4 me-md-2">Individual</a>
+            <a href="{{ url_for('insuranceGroup') }}" class="btn btn-primary px-4 me-md-2">Group (Employer Sponsored)</a>
+        </div>
+        <br>
+        <p>If you dont have a Citizen Id or Employee cards yet, Please visit <a href="{{ url_for('identityProvider') }}">Identity Provider</a> or <a href="{{ url_for('employer') }}">Employer</a>.</p>
+      </div>
+    </div>
+  </div>
+  <a href="https://www.freepik.com/free-vector/father-shaking-hands-with-insurance-agent_6974887.htm#query=insurance&position=2&from_view=search&track=sph">Image by pch.vector</a> on Freepik
+{% endblock %}

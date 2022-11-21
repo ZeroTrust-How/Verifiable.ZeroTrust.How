@@ -18,7 +18,7 @@ log.setLevel(logging.INFO)
 
 configFile = os.getenv('CONFIGFILE')
 if configFile is None:
-    configFile = os.path.realpath(os.path.join(os.path.dirname(__file__), 'config.json'))
+    configFile = os.path.realpath(os.path.join(os.path.dirname(__file__), '../config/config.json'))
     #configFile = sys.argv[1]
 config = json.load(open(configFile))
 

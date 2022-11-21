@@ -1,20 +1,25 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div style="text-align: center;">
-        <h1>Microsoft Entra Verified ID - Demo</h1>
-        <p>In a real world scenario you will be asked</p>    
-        <button type="button" id="idIssue" class="button">GET CREDENTIAL</button>
-        <button type="button" id="idVerify" class="button">VERIFY CREDENTIAL</button>
-        <script>
-            var idIssue = document.getElementById('idIssue');
-            var idVerify = document.getElementById('idVerify');
-            idIssue.addEventListener('click', () => {
-                window.location = "issuer.html";
-            })
-            idVerify.addEventListener('click', () => {
-                window.location = "verifier.html";
-            })
-        </script>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="images/index_image.jpg" class="d-block mx-lg-auto img-fluid" alt="logo" width="700" height="300" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">Verifiable Credentails</h1>
+        <p>This web application is to demo various use cases of <a href="https://learn.microsoft.com/en-us/azure/active-directory/verifiable-credentials/"><strong>Microsoft Entra Verified ID</strong></a>. Below  are the few examples among many:</p>
+        <ul>
+            <li class="list-group-item"><strong>Citizen Identity:</strong> Issues citizen identity card.</li> 
+            <li class="list-group-item"><strong>Employer:</strong> Verifies citizen id and issues employee card.</li>
+            <li class="list-group-item"><strong>Insurance Provider:</strong> Verifies citizen id or both citizen id and employee cards depends on use case and issues insurance card. </li>
+            <li class="list-group-item"><strong>Healthcare Provider:</strong> Verifies both citizen id and insurance cards.</li>
+        </ul>  
+        <p>For demo purposes, every credential will be issued in the name of <strong>Tyler Durden</strong>.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ url_for('identityProvider') }}" class="btn btn-primary px-4 me-md-2">Start Here!!</a>
+        </div>
+      </div>
     </div>
+  </div>
 {% endblock %}

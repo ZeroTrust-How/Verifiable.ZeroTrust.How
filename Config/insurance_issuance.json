@@ -1,0 +1,27 @@
+{
+  "includeQRCode": false,
+  "callback": {
+    "url": "https://YOURPUBLICREACHABLEHOSTNAME/api/issuer/issuanceCallback",
+    "state": "STATEWILLBESETINCODE",
+    "headers": {
+      "api-key": "OPTIONAL API-KEY for ISSUANCE CALLBACK API"
+    }
+  },
+  "authority": "did:web:verifiable.zerotrust.how",
+  "registration": {
+    "clientName": "Verifiable Insurance"
+  },
+  "type": "VerifiedInsuranceCredential",
+  "manifest": "https://verifiedid.did.msidentity.com/v1.0/tenants/cb7509f6-81f0-4425-a4ea-53167a79a405/verifiableCredentials/contracts/Y2I3NTA5ZjYtODFmMC00NDI1LWE0ZWEtNTMxNjdhNzlhNDA1dmVyaWZpYWJsZSBpbnN1cmFuY2U/manifest",
+  "pin": {
+    "value": "123456",
+    "length": 4
+  },
+  "claims": {
+    "given_name": "FIRSTNAME",
+    "family_name": "LASTNAME",
+    "insurance_id": "INSURANCEID",
+    "status": "STATUS",
+    "insurance_type": "INSURANCETYPE"
+  }
+}

@@ -1,32 +1,48 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-                <h1>Verifiable Credential Expert Issuance</h1>
-            
-                <button type="button" id="sign-in" class="button">GET CREDENTIAL</button>
-                <div id="qrText"  style="display:none;">
-                    <p class="small-text">
-                        <img src="authenticator-icon.png" alt="Authenticator icon" class="icon-small"><br>
-                        Scan with Microsoft Authenticator
-                    </p>
-                </div>
-                <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
-                <div id="qrcode" style="text-align: center"></div>
-                <div id="pinCodeText" style="display: none"></div>
-    
-                <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
-                   <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
-                   <div id="message"></div>
-                </div>
-    
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
+        <div id="qrcode" style="text-align: center"></div>
+        <div id="pinCodeText" style="display: none"></div>
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">True Citizen Identity</h1>
+        <div id="infoText"  style="display:block;">
+            <p>In a real world scenario, you will be asked to upload a Selfie and any identification document such as State Id, Drivers License, Passport to prove who you are. A real time verification will take place with the Identity Verification Partner to verify your identity. Upon confimration from partner, you will be issued a credentail.</p>
+            <p>Assume that the identity verification has been successful, please click on next step to issue a Id Card.</p>  
+        </div>
+        <div id="qrText"  style="display:none;">
+            <p class="small-text">
+                Scan the QR Code with Microsoft Authenticator
+            </p>
+        </div>
+        <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
+            <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
+            <div id="message"></div>
+         </div>
+         <div id="nextSteps" style="display: none">
+            <br>
+            <br>
+            <h5>Next steps</h5>
+            <a href="{{ url_for('employer') }}" class="btn btn-primary px-4 me-md-2">Employer</a>
+            <a href="{{ url_for('insuranceProvider') }}" class="btn btn-primary px-4 me-md-2">Insurance Provider</a>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <button type="button" id="issueId" class="btn btn-primary px-4 me-md-2">Next step</button>
+        </div>
+      </div>
+    </div>
+  </div>       
                 <script src="{{ url_for('static', filename='qrcode.min.js') }}"></script>
                 <script>
-                    var signIn = document.getElementById('sign-in');
-                    var signOut = document.getElementById('sign-out');
+                    var issueId = document.getElementById('issueId');
                     var display = document.getElementById('display');
                     var qrcode = new QRCode("qrcode", { width: 300, height: 300 });
                     var respIssuanceReq = null;
-                    signIn.addEventListener('click', () => {
+                    issueId.addEventListener('click', () => {
                         fetch('/api/issuer/issuance-request')
                         .then(function(response) {
                             response.text()
@@ -43,8 +59,9 @@
                                 } else {
                                     console.log(`Not Android or IOS. Generating QR code encoded with ${message}`);
                                     qrcode.makeCode(respIssuanceReq.url);
-                                    document.getElementById('sign-in').style.display = "none";
+                                    document.getElementById('issueId').style.display = "none";
                                     document.getElementById('qrText').style.display = "block";
+                                    document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
                                         document.getElementById('pinCodeText').style.display = "block";
@@ -64,7 +81,7 @@
                                         // QR Code scanned, show pincode if pincode is required
                                         if (respMsg.status == 'request_retrieved') {
                                             document.getElementById('message-wrapper').style.display = "block";
-                                            document.getElementById('qrText').style.display = "none";
+                                            document.getElementById('qrText').style.display = "none";                                           
                                             document.getElementById("qrcode").getElementsByTagName("img")[0].style.opacity = "0.1";
                                             if (respMsg.pin) {
                                                 document.getElementById('pinCodeText').style.display = "visible";
@@ -75,6 +92,9 @@
                                             document.getElementById('qrcode').style.display = "none";
                                             document.getElementById('pinCodeText').style.display = "none";
                                             document.getElementById('message').innerHTML = respMsg.message;
+                                            if (document.getElementById('qrcode').style.display == "none") {
+                                                document.getElementById('nextSteps').style.display = "block";
+                                            }
                                             clearInterval(checkStatus);
                                         }
                                         if (respMsg.status == 'issuance_failed') {

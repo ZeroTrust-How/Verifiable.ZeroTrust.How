@@ -13,14 +13,14 @@ import requests
 from random import randint
 import msal
 
-from extensions import cache
-from extensions import log
-from extensions import config
-from extensions import msalCca
+from common.extensions import cache
+from common.extensions import log
+from common.extensions import config
+from common.extensions import msalCca
 
 issuanceFile = os.getenv('ISSUANCEFILE')
 if issuanceFile is None:
-    issuanceFile = os.path.realpath(os.path.join(os.path.dirname(__file__), 'identity_issuance.json'))
+    issuanceFile = os.path.realpath(os.path.join(os.path.dirname(__file__), '../Config/employer_issuance.json'))
     #issuanceFile = sys.argv[2]
 fI = open(issuanceFile,)
 issuanceConfig = json.load(fI)
@@ -35,10 +35,10 @@ if "pin" in issuanceConfig is not None:
     if int(issuanceConfig["pin"]["length"]) == 0:
         del issuanceConfig["pin"]
 
-identity_issuer = Blueprint('identity_issuer', __name__)
+employer_issuer = Blueprint('employer_issuer', __name__)
 
-@identity_issuer.route("/api/issuer/issuance-request", methods = ['GET'])
-def issuanceRequest():
+@employer_issuer.route("/api/employer/issuance-request", methods = ['GET'])
+def employerIssuanceRequest():
     """ This method is called from the UI to initiate the issuance of the verifiable credential """
     id = str(uuid.uuid4())
     accessToken = ""
@@ -50,7 +50,7 @@ def issuanceRequest():
         print(result.get("error") + result.get("error_description"))
 
     payload = issuanceConfig.copy()
-    payload["callback"]["url"] = str(request.url_root).replace("http://", "https://") + "api/issuer/issuance-request-callback"
+    payload["callback"]["url"] = str(request.url_root).replace("http://", "https://") + "api/employer/issuance-request-callback"
     payload["callback"]["state"] = id
     pinCode = 0
     if "pin" in payload is not None:
@@ -59,8 +59,9 @@ def issuanceRequest():
     if "claims" in payload is not None:
         payload["claims"]["given_name"] = "Tyler"
         payload["claims"]["family_name"] = "Durden"
-        payload["claims"]["date_of_birth"] = "01/01/1990"
-        payload["claims"]["citizen_id"] = "UN-489376"
+        payload["claims"]["employee_id"] = "PSS7104"
+        payload["claims"]["email_address"] = "tdurden@paperstreetsoap.co"
+        payload["claims"]["status"] = "Active"
     print( json.dumps(payload) )
     post_headers = { "content-type": "application/json", "Authorization": "Bearer " + accessToken }
     client_api_request_endpoint = config["msIdentityHostName"] + "verifiableCredentials/createIssuanceRequest"
@@ -75,8 +76,8 @@ def issuanceRequest():
     #print(resp)
     return Response( json.dumps(resp), status=200, mimetype='application/json')
 
-@identity_issuer.route("/api/issuer/issuance-request-callback", methods = ['POST'])
-def issuanceRequestApiCallback():
+@employer_issuer.route("/api/employer/issuance-request-callback", methods = ['POST'])
+def employerIssuanceRequestApiCallback():
     """ This method is called by the VC Request API when the user scans a QR code and presents a Verifiable Credential to the service """
     issuanceResponse = request.json
     print(issuanceResponse)
@@ -93,7 +94,7 @@ def issuanceRequestApiCallback():
     if issuanceResponse["requestStatus"] == "issuance_successful":
         cacheData = {
             "status": issuanceResponse["requestStatus"],
-            "message": "Credential successfully issued"
+            "message": "Congrats!! Your employee card successfully issued."
         }
         cache.set( issuanceResponse["state"], json.dumps(cacheData) )
         return ""
@@ -106,8 +107,8 @@ def issuanceRequestApiCallback():
         return ""
     return ""
 
-@identity_issuer.route("/api/issuer/issuance-response", methods = ['GET'])
-def issuanceRequestStatus():
+@employer_issuer.route("/api/employer/issuance-response", methods = ['GET'])
+def employerIssuanceRequestStatus():
     """ this function is called from the UI polling for a response from the AAD VC Service.
     when a callback is recieved at the presentationCallback service the session will be updated
      """

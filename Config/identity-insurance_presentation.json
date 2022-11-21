@@ -9,15 +9,20 @@
   },
   "authority": "did:web:verifiable.zerotrust.how",
   "registration": {
-    "clientName": "Identity Verifier",
-    "purpose": "So we can verify your identity."
+    "clientName": "Healthcare Provider",
+    "purpose": "We need to verify your identity and insurance."
   },
   
   "includeReceipt": false,
   "requestedCredentials": [
     {
       "type": "VerifiedIdentityCredential",
-      "purpose": "So we can verify your identity.",
+      "purpose": "We need to verify your identity.",
+      "acceptedIssuers": [ "did:web:verifiable.zerotrust.how" ]
+    },
+    {
+      "type": "VerifiedInsuranceCredential",
+      "purpose": "We need to verify your insurance.",
       "acceptedIssuers": [ "did:web:verifiable.zerotrust.how" ]
     }
   ],

@@ -1,0 +1,35 @@
+{
+  "includeQRCode": false,
+  "callback": {
+    "url": "https://YOURPUBLICREACHABLEHOSTNAME/api/verifier/presentationCallback",
+    "state": "STATEWILLBESETINCODE",
+    "headers": {
+      "api-key": "OPTIONAL API-KEY for VERIFIER CALLBACK API"
+    }
+  },
+  "authority": "did:web:verifiable.zerotrust.how",
+  "registration": {
+    "clientName": "An Insurance Company",
+    "purpose": "We need to verify your identity and employment."
+  },
+  
+  "includeReceipt": false,
+  "requestedCredentials": [
+    {
+      "type": "VerifiedIdentityCredential",
+      "purpose": "We need to verify your identity.",
+      "acceptedIssuers": [ "did:web:verifiable.zerotrust.how" ]
+    },
+    {
+      "type": "VerifiedEmployeeCredential",
+      "purpose": "We need to verify your employment.",
+      "acceptedIssuers": [ "did:web:verifiable.zerotrust.how" ]
+    }
+  ],
+  "configuration": {
+    "validation": {
+      "allowRevoked": false,
+      "validateLinkedDomain": true
+    }
+  }
+}
