@@ -117,7 +117,7 @@
                                         if (respMsg.status == 'presentation_verified') {
                                             document.getElementById('claims-wrapper').style.display = "block";
                                             document.getElementById('qrcode').style.display = "none";
-                                            document.getElementById('presentationMessage').innerHTML = respMsg.message;
+                                            document.getElementById('presentationMessage').style.display = "none";
                                             document.getElementById('firstName').innerText  = respMsg.firstName;
                                             document.getElementById('lastName').innerText  = respMsg.lastName;
                                             document.getElementById('dateOfBirth').innerText  = respMsg.dateOfBirth;

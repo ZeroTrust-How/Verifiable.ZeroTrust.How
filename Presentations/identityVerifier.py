@@ -80,7 +80,7 @@ def presentationRequestApiCallback():
     if presentationResponse["requestStatus"] == "presentation_verified":
         cacheData = {
             "status": presentationResponse["requestStatus"],
-            #"message": "Presentation received",
+            "message": "Presentation received",
             "payload": presentationResponse["verifiedCredentialsData"],
             "subject": presentationResponse["subject"],
             "firstName": presentationResponse["verifiedCredentialsData"][0]["claims"]["firstName"],

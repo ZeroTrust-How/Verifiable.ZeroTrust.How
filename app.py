@@ -70,7 +70,7 @@ def insuranceGroup():
 
 @app.route('/healthcare-provider/')
 def healthcareProvider():
-    return render_template('healthcare-provider.html')
+    return render_template('healthcare-verifier.html')
 
     
 @app.route('/picture-credits/')
