@@ -1,42 +1,47 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="container col-xxl-8 px-4 py-5">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-      <div class="col-10 col-sm-8 col-lg-6">
-        <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
-        <div id="qrcode" style="text-align: center"></div>
-        <div id="pinCodeText" style="display: none"></div>
-      </div>
-      <div class="col-lg-6">
-        <h1 class="display-5 fw-bold lh-1 mb-3">True Citizen Identity</h1>
-        <div id="infoText"  style="display:block;">
-            <p>In a real world scenario, you will be asked to upload a Selfie and any identification document such as State Id, Drivers License, Passport to prove who you are. A real time verification will take place with the Identity Verification Partner to verify your identity. Upon confimration from partner, you will be issued a credentail.</p>
-            <p>Assume that the identity verification has been successful, please click on next step to issue a Id Card.</p>  
-        </div>
-        <div id="qrText"  style="display:none;">
-            <p class="small-text">
-                Scan the QR Code with Microsoft Authenticator
-            </p>
-        </div>
-        <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
-            <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
-            <div id="message"></div>
-         </div>
-         <div id="nextSteps" style="display: none">
-            <br>
-            <br>
-            <h5>Next steps</h5>
-            <a href="{{ url_for('employer') }}" class="btn btn-primary px-4 me-md-2">Employer</a>
-            <a href="{{ url_for('insuranceProvider') }}" class="btn btn-primary px-4 me-md-2">Insurance Provider</a>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <button type="button" id="issueId" class="btn btn-primary px-4 me-md-2">Next step</button>
-        </div>
-      </div>
-    </div>
-  </div>       
-                <script src="{{ url_for('static', filename='qrcode.min.js') }}"></script>
+        <section class="bg-light">
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+                    <div class="col-12 col-lg-5">
+                        <h2 class="display-4 lh-1 mb-4">True Citizen ID</h2>
+                        <div id="infoText"  style="display:block;">
+                            <p class="lead fw-normal text-muted">In a real world scenario, you will be asked to upload a Selfie and any identification document such as State Id, Drivers License, Passport to prove who you are. A real time verification will take place with the Identity Verification Partner to verify your identity. Upon confimration from partner, you will be issued a credentail.</p>
+                            <p class="lead fw-normal text-muted">Assume that the identity verification has been successful, Please click on next step to issue a Id Card.</p>
+                        </div>
+                        <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
+                            <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
+                            <div id="message"></div>
+                         </div>
+                        <div id="nextSteps" style="display: none">
+                            <br>
+                            <br>
+                            <h5>Next steps</h5>
+                            <a href="{{ url_for('employer') }}" class="btn btn-primary px-4 me-md-2">Employer</a>
+                            <a href="{{ url_for('insuranceProvider') }}" class="btn btn-primary px-4 me-md-2">Insurance Provider</a>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <button type="button" id="issueId" class="btn btn-primary px-4 me-md-2">Next step</button>
+                        </div>
+                    </div>
+                    <div id="image-section" class="col-sm-8 col-md-6">
+                        <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src="../assets/img/identity-provider.svg" alt="..." /></div>
+                    </div>
+                    <div id="qr-section" class="col-sm-8 col-md-6">
+                        <div id="qrText"  style="display:none;">
+                            <p class="small-text lead fw-normal text-muted">
+                                Scan the QR Code with Microsoft Authenticator
+                            </p>
+                        </div>
+                        <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
+                        <div id="qrcode" style="text-align: center"></div>
+                        <div id="pinCodeText" style="display: none"></div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+                <script src="{{ url_for('static', filename='js/qrcode.min.js') }}"></script>
                 <script>
                     var issueId = document.getElementById('issueId');
                     var display = document.getElementById('display');
@@ -61,6 +66,7 @@
                                     qrcode.makeCode(respIssuanceReq.url);
                                     document.getElementById('issueId').style.display = "none";
                                     document.getElementById('qrText').style.display = "block";
+                                    document.getElementById('image-section').style.display = "none";
                                     document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
@@ -95,6 +101,7 @@
                                             if (document.getElementById('qrcode').style.display == "none") {
                                                 document.getElementById('nextSteps').style.display = "block";
                                             }
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                         if (respMsg.status == 'issuance_failed') {
@@ -103,6 +110,7 @@
                                             //document.getElementById('message').innerHTML = respMsg.message;
                                             document.getElementById('message').innerHTML = "Issuance error occured, did you enter the wrong pincode? Please refresh the page and try again.";
                                             document.getElementById('payload').innerHTML = "Payload: " + respMsg.payload;
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                     }
