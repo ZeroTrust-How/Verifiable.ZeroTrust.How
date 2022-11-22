@@ -1,67 +1,72 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="container col-xxl-8 px-4 py-5">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-      <div class="col-10 col-sm-8 col-lg-6">
-        <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
-        <div id="qrcode" style="text-align: center"></div>
-        <div id="pinCodeText" style="display: none"></div>
-      </div>
-      <div class="col-lg-6">
-        <h1 class="display-5 fw-bold lh-1 mb-3">An Insurance Company</h1>
-        <h3>Individual Enrollment</h3>
-        <div id="infoText"  style="display:block;">
-            <p>You will be asked to verify with your Citizen Id. Upon successful verification you will be issued an Insurance Card.</p>
-            <p>If you dont have a Citizen Id card yet, Please visit <a href="{{ url_for('identityProvider') }}">Identity Provider</a></p>           
+<section class="bg-light">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+            <div class="col-12 col-lg-5">
+                <h2 class="display-4 lh-1 mb-4">An Insurance Company</h2>
+                <h3>Individual Enrollment</h3>
+                <div id="infoText"  style="display:block;">
+                    <p class="lead fw-normal text-muted">You will be asked to verify with your Citizen Id. Upon successful verification you will be issued an Insurance Card.</p>
+                    <p class="lead fw-normal text-muted">If you dont have a Citizen Id card yet, Please visit <a href="{{ url_for('identityProvider') }}">Identity Provider</a></p>  
+                </div>
+                <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
+                    <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
+                    <div id="presentationMessage"></div>
+                    <div id="issuanceMessage"></div>
+                    <div id="subject"></div>
+                    <div id="payload"></div>
+                 </div>
+                 <div id="nextSteps" style="display: none">
+                    <br>
+                    <h5>Next steps</h5>
+                    <a href="{{ url_for('healthcareProvider') }}" class="btn btn-primary px-4 me-md-2">Healthcare Provider</a>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button type="button" id="verifyId" class="btn btn-primary px-4 me-md-2">Get started -></button>
+                </div>
+                <div id="claims-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
+                    <table class="table table-dark table-striped">
+                        <tr>
+                            <th scope="row">Citizen Id</th>
+                            <td id="citizenId"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">First Name</th>
+                            <td id="firstName"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Last Name</th>
+                            <td id="lastName"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date of Birth</th>
+                            <td id="dateOfBirth"></td>
+                        </tr>
+                    </table>
+                    <p>Please click on next step to get your employee Credential</p>
+                    <button type="button" id="individual_issuance" class="btn btn-primary px-4 me-md-2">Next step</button>
+                </div>
+            </div>
+            <div id="image-section" class="col-sm-8 col-md-6">
+                <div class="px-5 px-sm-0"><img class="img-fluid rounded-circle" src="../assets/img/insurance-individual.svg" alt="..." /></div>
+            </div>
+            <div id="qr-section" class="col-sm-8 col-md-6">
+                <div id="qrText"  style="display:none;">
+                    <p class="small-text lead fw-normal text-muted">
+                        Scan the QR Code with Microsoft Authenticator
+                    </p>
+                </div>
+                <a id="deeplink" style="display: none;margin-top: 10px;">Tap to open Authenticator on mobile</a>
+                <div id="qrcode" style="text-align: center"></div>
+                <div id="pinCodeText" style="display: none"></div>
+            </div>
         </div>
-        <div id="qrText"  style="display:none;">
-            <p class="small-text">
-                Scan the QR Code with Microsoft Authenticator
-            </p>
-        </div>
-        <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
-            <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
-            <div id="presentationMessage"></div>
-            <div id="issuanceMessage"></div>
-            <div id="subject"></div>
-            <div id="payload"></div>
-         </div>
-         <div id="nextSteps" style="display: none">
-            <br>
-            <h5>Next steps</h5>
-            <a href="{{ url_for('healthcareProvider') }}" class="btn btn-primary px-4 me-md-2">Healthcare Provider</a>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <button type="button" id="verifyId" class="btn btn-primary px-4 me-md-2">Get started -></button>
-        </div>
-        <div id="claims-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
-            <table class="table table-dark table-striped">
-                <tr>
-                    <th scope="row">Citizen Id</th>
-                    <td id="citizenId"></td>
-                </tr>
-                <tr>
-                    <th scope="row">First Name</th>
-                    <td id="firstName"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Last Name</th>
-                    <td id="lastName"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Date of Birth</th>
-                    <td id="dateOfBirth"></td>
-                </tr>
-            </table>
-            <p>Please click on next step to get your Insurance Card</p>
-            <button type="button" id="individual_issuance" class="btn btn-primary px-4 me-md-2">Next step</button>
-        </div>
-      </div>
     </div>
-  </div>
+</section> 
     
-                <script src="{{ url_for('static', filename='qrcode.min.js') }}"></script>
+                <script src="{{ url_for('static', filename='js/qrcode.min.js') }}"></script>
                 <script>
                     var verifyId = document.getElementById('verifyId');
                     var display = document.getElementById('display');
@@ -86,6 +91,7 @@
                                     qrcode.makeCode(respPresentationReq.url);
                                     document.getElementById('verifyId').style.visibility = "hidden";
                                     document.getElementById('infoText').style.display = "none";
+                                    document.getElementById('image-section').style.display = "none";
                                     document.getElementById('qrText').style.display = "block";
                                 }
                             }).catch(error => { console.log(error.message); })
@@ -117,6 +123,7 @@
                                             document.getElementById('dateOfBirth').innerText  = respMsg.dateOfBirth;
                                             document.getElementById('citizenId').innerText  = respMsg.citizenId;
                                             document.getElementById('subject').innerHTML = respMsg.firstName +" " + respMsg.lastName +" identity has been verified.";
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                     }
@@ -146,6 +153,7 @@
                                     qrcode.makeCode(respIssuanceReq.url);
                                     document.getElementById('verifyId').style.display = "none";
                                     document.getElementById('qrText').style.display = "block";
+                                    document.getElementById('image-section').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
                                         document.getElementById('pinCodeText').style.display = "block";
@@ -176,6 +184,7 @@
                                             document.getElementById('qrcode').style.display = "none";
                                             document.getElementById('pinCodeText').style.display = "none";
                                             document.getElementById('issuanceMessage').innerHTML = respMsg.message;
+                                            document.getElementById('image-section').style.display = "block";
                                             if (document.getElementById('qrcode').style.display == "none") {
                                                 document.getElementById('nextSteps').style.display = "block";
                                             }
@@ -186,6 +195,7 @@
                                             document.getElementById('pinCodeText').style.display = "none";
                                             document.getElementById('issuanceMessage').innerHTML = "Issuance error occured, did you enter the wrong pincode? Please refresh the page and try again.";
                                             document.getElementById('payload').innerHTML = "Payload: " + respMsg.payload;
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                     }
