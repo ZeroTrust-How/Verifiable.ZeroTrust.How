@@ -9,7 +9,7 @@
   },
   "authority": "did:web:verifiable.zerotrust.how",
   "registration": {
-    "clientName": "Identity Verifier",
+    "clientName": "Identity Verification",
     "purpose": "We need to verify your identity."
   },
   
