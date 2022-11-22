@@ -72,10 +72,13 @@ def insuranceGroup():
 def healthcareProvider():
     return render_template('healthcare-verifier.html')
 
+@app.route('/terms-privacy/')
+def termsPrivacy():
+    return render_template('terms-privacy.html')
     
-@app.route('/picture-credits/')
-def pictureCredits():
-    return render_template('picture-credits.html')
+@app.route('/credits/')
+def credits():
+    return render_template('credits.html')
 
 @app.route("/echo", methods = ['GET'])
 def echoApi():
