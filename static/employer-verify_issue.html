@@ -14,6 +14,7 @@
                     <i class="fas fa-user-check green icon-text-large margin-bottom-25"></i>
                     <div id="presentationMessage"></div>
                     <div id="issuanceMessage"></div>
+                    <div id="mobilePinCodeText" style="display: none"></div>
                     <div id="subject"></div>
                     <div id="payload"></div>
                  </div>
@@ -153,15 +154,30 @@
                                     console.log(`Android device! Using deep link (${respIssuanceReq.url}).`);
                                     window.location.href = respIssuanceReq.url; setTimeout(function () {
                                     window.location.href = "https://play.google.com/store/apps/details?id=com.azure.authenticator"; }, 2000);
+                                    document.getElementById('issueId').style.display = "none";
+                                    document.getElementById('image-section').style.display = "none";
+                                    document.getElementById('infoText').style.display = "none";
+                                    if (respIssuanceReq.pin) {
+                                        document.getElementById('mobilePinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
+                                        document.getElementById('mobilePinCodeText').style.display = "block";
+                                    }
                                 } else if (/iPhone/i.test(navigator.userAgent)) {
                                     console.log(`iOS device! Using deep link (${respIssuanceReq.url}).`);
                                     window.location.replace(respIssuanceReq.url);
+                                    document.getElementById('issueId').style.display = "none";
+                                    document.getElementById('image-section').style.display = "none";
+                                    document.getElementById('infoText').style.display = "none";
+                                    if (respIssuanceReq.pin) {
+                                        document.getElementById('mobilePinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
+                                        document.getElementById('mobilePinCodeText').style.display = "block";
+                                    }
                                 } else {
                                     console.log(`Not Android or IOS. Generating QR code encoded with ${message}`);
                                     qrcode.makeCode(respIssuanceReq.url);
                                     document.getElementById('verifyId').style.display = "none";
                                     document.getElementById('qrText').style.display = "block";
                                     document.getElementById('image-section').style.display = "none";
+                                    document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
                                         document.getElementById('pinCodeText').style.display = "block";
@@ -193,11 +209,13 @@
                                         if (respMsg.status == 'issuance_successful') {
                                             document.getElementById('qrcode').style.display = "none";
                                             document.getElementById('pinCodeText').style.display = "none";
+                                            document.getElementById('mobilePinCodeText').style.display = "none";
                                             document.getElementById('issuanceMessage').innerHTML = respMsg.message;
                                             document.getElementById('image-section').style.display = "block";
                                             if (document.getElementById('qrcode').style.display == "none") {
                                                 document.getElementById('nextSteps').style.display = "block";
                                             }
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                         if (respMsg.status == 'issuance_failed') {
@@ -207,6 +225,7 @@
                                             document.getElementById('image-section').style.display = "block";
                                             document.getElementById('issuanceMessage').innerHTML = "Issuance error occured, did you enter the wrong pincode? Please refresh the page and try again.";
                                             document.getElementById('payload').innerHTML = "Payload: " + respMsg.payload;
+                                            document.getElementById('image-section').style.display = "block";
                                             clearInterval(checkStatus);
                                         }
                                     }
