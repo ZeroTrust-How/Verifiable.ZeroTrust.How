@@ -12,6 +12,7 @@
                         </div>
                         <div id="message-wrapper" class="margin-bottom-75 margin-top-75" style="display: none">
                             <div id="message"></div>
+                            <div id="mobilePinCodeText" style="display: none"></div>
                          </div>
                         <div id="nextSteps" style="display: none">
                             <br>
@@ -59,8 +60,8 @@
                                     document.getElementById('image-section').style.display = "none";
                                     document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
-                                        document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
-                                        document.getElementById('pinCodeText').style.display = "block";
+                                        document.getElementById('mobilePinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
+                                        document.getElementById('mobilePinCodeText').style.display = "block";
                                     }
                                 } else if (/iPhone/i.test(navigator.userAgent)) {
                                     console.log(`iOS device! Using deep link (${respIssuanceReq.url}).`);
@@ -68,8 +69,8 @@
                                     document.getElementById('image-section').style.display = "none";
                                     document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
-                                        document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
-                                        document.getElementById('pinCodeText').style.display = "block";
+                                        document.getElementById('mobilePinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
+                                        document.getElementById('mobilePinCodeText').style.display = "block";
                                     }
                                 } else {
                                     console.log(`Not Android or IOS. Generating QR code encoded with ${message}`);
