@@ -56,6 +56,8 @@
                                     console.log(`Android device! Using deep link (${respIssuanceReq.url}).`);
                                     window.location.href = respIssuanceReq.url; setTimeout(function () {
                                     window.location.href = "https://play.google.com/store/apps/details?id=com.azure.authenticator"; }, 2000);
+                                    document.getElementById('image-section').style.display = "none";
+                                    document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
                                         document.getElementById('pinCodeText').style.display = "block";
@@ -63,6 +65,8 @@
                                 } else if (/iPhone/i.test(navigator.userAgent)) {
                                     console.log(`iOS device! Using deep link (${respIssuanceReq.url}).`);
                                     window.location.replace(respIssuanceReq.url);
+                                    document.getElementById('image-section').style.display = "none";
+                                    document.getElementById('infoText').style.display = "none";
                                     if (respIssuanceReq.pin) {
                                         document.getElementById('pinCodeText').innerHTML = "Pin code: " + respIssuanceReq.pin;
                                         document.getElementById('pinCodeText').style.display = "block";
