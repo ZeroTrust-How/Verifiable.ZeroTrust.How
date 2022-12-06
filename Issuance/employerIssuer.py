@@ -60,7 +60,7 @@ def employerIssuanceRequest():
         payload["claims"]["given_name"] = "Tyler"
         payload["claims"]["family_name"] = "Durden"
         payload["claims"]["employee_id"] = "PSS7104"
-        payload["claims"]["email_address"] = "tdurden@paperstreetsoap.co"
+        payload["claims"]["email_address"] = "tdurden@paperstreetsoap.demo"
         payload["claims"]["status"] = "Active"
     print( json.dumps(payload) )
     post_headers = { "content-type": "application/json", "Authorization": "Bearer " + accessToken }
