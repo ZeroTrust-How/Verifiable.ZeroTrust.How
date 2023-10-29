@@ -1,84 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="Prudhvi Keertipati" />
 
-        <meta name="title" property="og:title" content="Verifiable Credentials Demo - By Prudhvi Keertipati" />
-        <meta name="type" property="og:type" content="website" />
-        <meta name="image" property="og:image" content="https://verifiable.zerotrust.how/assets/img/index-image.jpg" />
-        <meta name="url" property="og:url" content="https://Verifiable.ZeroTrust.How" />
-        <meta name="twitter:card" content="https://verifiable.zerotrust.how/assets/img/index-image.jpg" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="Prudhvi Keertipati" />
 
-        <meta name="description" property="og:description" content="A demo application to showcase various use cases of Microsoft Entra Verified ID" />
-        <meta property="og:site_name" content="Verifiable.ZeroTrust.How" />
-        <meta name="twitter:image:alt" content="Verifiable Credentials - Verifiable.ZeroTrust.How" />
+  <meta name="title" property="og:title" content="Verifiable Credentials Demo - By Prudhvi Keertipati" />
+  <meta name="type" property="og:type" content="website" />
+  <meta name="image" property="og:image" content="https://verifiable.zerotrust.how/assets/img/index-image.jpg" />
+  <meta name="url" property="og:url" content="https://Verifiable.ZeroTrust.How" />
+  <meta name="twitter:card" content="https://verifiable.zerotrust.how/assets/img/index-image.jpg" />
 
-        <meta property="fb:app_id" content="your_app_id" />
-        <meta name="twitter:site" content="@" />
+  <meta name="description" property="og:description"
+    content="A demo application to showcase various use cases of Microsoft Entra Verified ID" />
+  <meta property="og:site_name" content="Verifiable.ZeroTrust.How" />
+  <meta name="twitter:image:alt" content="Verifiable Credentials - Verifiable.ZeroTrust.How" />
 
-        <title>Verifiable.ZeroTrust.How</title>
+  <meta property="fb:app_id" content="your_app_id" />
+  <meta name="twitter:site" content="@" />
 
-        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/logo/zth_logo.png') }}" />
-        <!-- Bootstrap icons-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-        <!-- Google fonts-->
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    </head>
-    <body id="page-top" class="bg-light">
-        <!-- Navigation-->
-        <header>
-            <div class="px-3 py-2 text-bg-dark">
-              <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                  <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-                    Verifiable.ZeroTrust.How
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="px-3 py-2 border-bottom mb-3">
-              <div class="container d-flex flex-wrap justify-content-center">            
-                <div class="text-end">
-                    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="{{ url_for('identityProvider') }}" class="nav-link px-2 link-dark">Identity Provider</a></li>
-                        <li><a href="{{ url_for('employer') }}" class="nav-link px-2 link-dark">Employer</a></li>
-                        <li><a href="{{ url_for('insuranceProvider') }}" class="nav-link px-2 link-dark">Insurance Provider</a></li>
-                        <li><a href="{{ url_for('healthcareProvider') }}" class="nav-link px-2 link-dark">Healthcare Provider</a></li>
-                    </ul>
-                </div>
-              </div>
-            </div>
-        </header>
-        {% block content %} {% endblock %}
-        <!-- Footer-->
-        <footer class="bg-black text-center py-1 fixed-bottom">
-            <div class="container px-5">
-                <div class="text-white-50 small">
-                    <div class="mb-2">Verifiable.ZeroTrust.How</div>
-                    <a href="https://www.linkedin.com/in/prudhvi-keertipati/" target="_blank"><i class="bi bi-linkedin"></i></a>
-                    <span class="mx-1">&middot;</span>
-                    <!--<a href="#!"><i class="bi bi-github"></i></a>
+  <title>Verifiable.ZeroTrust.How</title>
+
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/logo/zth_logo.png') }}" />
+  <!-- Bootstrap icons-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <!-- Google fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body id="page-top" class="bg-light">
+  <!-- Navigation-->
+  <header>
+    <div class="px-3 py-2 text-bg-dark">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+            Verifiable.ZeroTrust.How
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 py-2 border-bottom mb-3">
+      <div class="container d-flex flex-wrap justify-content-center">
+        <div class="text-end">
+          <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="{{ url_for('identityProvider') }}" class="nav-link px-2 link-dark">Identity Provider</a></li>
+            <li><a href="{{ url_for('employer') }}" class="nav-link px-2 link-dark">Employer</a></li>
+            <li><a href="{{ url_for('insuranceProvider') }}" class="nav-link px-2 link-dark">Insurance Provider</a></li>
+            <li><a href="{{ url_for('healthcareProvider') }}" class="nav-link px-2 link-dark">Healthcare Provider</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% block content %} {% endblock %}
+  <!-- Footer-->
+  <footer class="bg-black text-center py-1 fixed-bottom">
+    <div class="container px-5">
+      <div class="text-white-50 small">
+        <div class="mb-2">Verifiable.ZeroTrust.How</div>
+        <a href="https://www.linkedin.com/in/prudhvi-keertipati/" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <span class="mx-1">&middot;</span>
+        <!--<a href="#!"><i class="bi bi-github"></i></a>
                     <span class="mx-1">&middot;</span>
                     <a href="#!"><i class="bi bi-browser-edge"></i></a>
                     <span class="mx-1">&middot;</span>-->
-                    <a href="{{ url_for('termsPrivacy') }}"><i class="bi bi-shield-fill-exclamation"></i></a>
-                    <span class="mx-1">&middot;</span>
-                    <a href="{{ url_for('credits') }}"><i class="bi bi-megaphone"></i></a>
-                </div>
-            </div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-        <!-- Core theme JS-->
-        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-    </body>
+        <a href="{{ url_for('termsPrivacy') }}"><i class="bi bi-shield-fill-exclamation"></i></a>
+        <span class="mx-1">&middot;</span>
+        <a href="{{ url_for('credits') }}"><i class="bi bi-megaphone"></i></a>
+      </div>
+    </div>
+  </footer>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+  <!-- Core theme JS-->
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  <!-- Passkey Readiness Tool-->>
+  <script src="https://thepasskeyjourney.com/assets/passkey.min.js"></script>
+  <script>
+    passkeyAssessment('eVLC2bTDqeN9Gp8W')
+  </script>
+</body>
+
 </html>
